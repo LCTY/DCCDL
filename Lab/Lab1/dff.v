@@ -1,14 +1,12 @@
 module dff(
-	input Clk, Reset, LdEnable, Data, Load, 
+	input Clk, Reset, D,  
 	output reg Q
 );
-	always @(posedge Clk or negedge Reset) begin
-		if (!Reset)
-			Q <= 0;
-		else if (LdEnable)
-			Q <= Load;
+	always @(posedge Clk or posedge Reset) begin
+		if (Reset)
+			Q <= 1'b1;
 		else
-			Q <= Data;
+			Q <= D;
 	end
 	
 endmodule
