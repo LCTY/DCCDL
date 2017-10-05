@@ -1,12 +1,13 @@
 clc;
-input = fix(rand(2,8)' * 256);
-for i = 1:8
+N = 12;
+input = fix(rand(2,N)' * 256);
+for i = 1:N
     input(i,2) = i-1;
 end
 disp(input);
 
 dff = [255 0];
-for i = 1:8
+for i = 1:N
     [dff(1), dff(2)] = Mux( ...
         input(i,:), ...
         dff, ...
