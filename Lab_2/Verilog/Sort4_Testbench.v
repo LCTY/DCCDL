@@ -3,17 +3,17 @@
 module Sort4_Testbench;
 
 	// Inputs
-	reg [11:0] DataIn_0;
-	reg [11:0] DataIn_1;
-	reg [11:0] DataIn_2;
-	reg [11:0] DataIn_3;
+	reg [12:0] DataIn_0;
+	reg [12:0] DataIn_1;
+	reg [12:0] DataIn_2;
+	reg [12:0] DataIn_3;
 
 	// Outputs
 	wire [7:0] DataOut_0;
 	wire [7:0] DataOut_1;
 	wire [7:0] DataOut_2;
 	wire [7:0] DataOut_3;
-	wire [3:0] Index_0, Index_1, Index_2, Index_3;
+	wire [4:0] Index_0, Index_1, Index_2, Index_3;
 
 	// Instantiate the Unit Under Test (UUT)
 	Sort4 uut (
@@ -29,10 +29,10 @@ module Sort4_Testbench;
 
 	initial begin
 		// Initialize Inputs
-		DataIn_0 = {8'd23, 4'd0};
-		DataIn_1 = {8'd99, 4'd1};
-		DataIn_2 = {8'd78, 4'd2};
-		DataIn_3 = {8'd45, 4'd3};
+		DataIn_0 = {8'd23, 5'd0};
+		DataIn_1 = {8'd99, 5'd1};
+		DataIn_2 = {8'd78, 5'd2};
+		DataIn_3 = {8'd45, 5'd3};
 		// Wait 100 ns for global reset to finish
 		#100;
         
