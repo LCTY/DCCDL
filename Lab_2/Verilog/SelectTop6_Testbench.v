@@ -3,32 +3,8 @@
 module SelectTop6_Testbench;
 
 	// Inputs
-	reg Clk;
-	reg Reset;
-	reg [12:0] DataIn_0;
-	reg [12:0] DataIn_1;
-	reg [12:0] DataIn_2;
-	reg [12:0] DataIn_3;
-	reg [12:0] DataIn_4;
-	reg [12:0] DataIn_5;
-	reg [12:0] DataIn_6;
-	reg [12:0] DataIn_7;
-	reg [12:0] DataIn_8;
-	reg [12:0] DataIn_9;
-	reg [12:0] DataIn_10;
-	reg [12:0] DataIn_11;
-	reg [12:0] DataIn_12;
-	reg [12:0] DataIn_13;
-	reg [12:0] DataIn_14;
-	reg [12:0] DataIn_15;
-	reg [12:0] DataIn_16;
-	reg [12:0] DataIn_17;
-	reg [12:0] DataIn_18;
-	reg [12:0] DataIn_19;
-	reg [12:0] DataIn_20;
-	reg [12:0] DataIn_21;
-	reg [12:0] DataIn_22;
-	reg [12:0] DataIn_23;
+	reg Clk, Reset;
+	reg [12:0] DataIn_0, DataIn_1, DataIn_2, DataIn_3, DataIn_4, DataIn_5, DataIn_6, DataIn_7, DataIn_8, DataIn_9, DataIn_10, DataIn_11, DataIn_12, DataIn_13, DataIn_14, DataIn_15, DataIn_16, DataIn_17, DataIn_18, DataIn_19, DataIn_20, DataIn_21, DataIn_22, DataIn_23;
 
 	// Outputs
 	wire [15:0] DataOut;
@@ -69,7 +45,7 @@ module SelectTop6_Testbench;
 		.DataOut(DataOut)
 	);
 	
-	always #5 Clk = ~Clk;
+	always #20 Clk = ~Clk;
 
 	initial begin
 		// Initialize Inputs
@@ -107,7 +83,9 @@ module SelectTop6_Testbench;
 		DataIn_23 = {8'd30, 5'd23};
 
 		// Wait 100 ns for global reset to finish
-		#5; Reset = 0;
+		#100; Reset = 0;
+		
+		#220; $finish;
         
 		// Add stimulus here
 
