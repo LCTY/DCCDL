@@ -11,6 +11,7 @@
 *.didat
 *.drc
 *.edif
+*.fig
 *.gise
 *.html
 *.ini
