@@ -188,9 +188,19 @@ for i = 1:10
     Y(1) = trun( sin(alpha(i)), 10);
     theta = zeros(1,N);
     
+    if X(1) >=0 && Y(1) >=0
+        q = 1;
+    elseif X(1) <0 && Y(1) >=0
+        q = 2;
+    elseif X(1) <0 && Y(1) <0
+        q = 3;
+    else
+        q = 4;
+    end
+    
     X(1) = abs(X(1));
     Y(1) = abs(Y(1));
-
+    
     element_angle = zeros(1,N);
     for j = 1:N
         if Y(j) >= 0
@@ -208,13 +218,24 @@ for i = 1:10
         theta(j+1) = theta(j) - u*element_angle(j);
         theta(j+1) = trun( theta(j+1), bit_t);
     end
+    
+    if q == 1
+        theta_N(i) = theta(N+1);
+    elseif q == 2
+        theta_N(i) = pi - theta(N+1);
+    elseif q == 3
+        theta_N(i) = theta(N+1) - pi;
+    else
+        theta_N(i) = -theta(N+1);
+    end
+    
     int_word_len = [...
         max(int_word_len(1,1),max(X)) ...
         min(int_word_len(1,2),min(X)); ...
         max(int_word_len(2,1),max(Y)) ...
         min(int_word_len(2,2),min(Y)); ...
-        max(int_word_len(3,1),max(theta)) ...
-        min(int_word_len(3,2),min(theta))];
+        max(int_word_len(3,1),max(theta(i))) ...
+        min(int_word_len(3,2),min(theta(i)))];
     X_output(i) = X(N+1);
     Y_output(i) = Y(N+1);
 end
@@ -234,4 +255,4 @@ for i = 1:N
 end
 text = [element_angle; element_angle_trun];
 fprintf('\nElementary angles\nfloating-point\t\tfixed-point\n');
-fprintf('%.14f\t\t%.14f\n', text);
+% fprintf('%.14f\t\t%.14f\n', text);
