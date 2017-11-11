@@ -46,6 +46,7 @@
 *.txt
 *.unroutes
 *.ut
+*.vdb
 *.vhd
 *.wcfg
 *.wdb
@@ -61,6 +62,6 @@
 *.xst
 *.xwbt
 _1
+pn_info
 Lab_2/Matlab/test.m
 Lab_2/Verilog/isim/*
-Lab_3/Verilog/isim/pn_info

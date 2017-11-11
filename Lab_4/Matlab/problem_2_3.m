@@ -178,6 +178,8 @@ fprintf('MAE of fixed-point:\t\t%10.8f\n', MAE(1,35));
 
 %% Integer word-length analysis
 N = 11;
+bit_xy = 13;
+bit_t = 14;
 X = zeros(1,N);
 Y = zeros(1,N);
 X_output = zeros(1,10);
