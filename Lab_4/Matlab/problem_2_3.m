@@ -61,16 +61,24 @@ for N = 1:20
     MAE(N) = log2(mean(abs(cart2pol(X_0,Y_0) - theta_N)));
 end
 plot(MAE);
+[a b] = cart2pol(X_0,Y_0)
 xlabel('N', 'fontSize', 14);
 ylabel('Log2(MAE)', 'fontSize', 14);
 
 %% MAE of floating-point
 % ¥ON=11º¡¨¬2^-10­n¨D
 N = 11;
+bit_xy = 13;
+bit_t = 14;
+X = zeros(1,N);
+Y = zeros(1,N);
+theta_N = zeros(1,10);
 for i = 1:10
-    X(1) = floor( cos(alpha(i)) * 2^10 ) / 2^10;
-    Y(1) = floor( sin(alpha(i)) * 2^10 ) / 2^10;
+    X(1) = trun( cos(alpha(i)), 10);
+    Y(1) = trun( sin(alpha(i)), 10);
+    
     theta = zeros(1,N);
+    
     if X(1) >=0 && Y(1) >=0
         q = 1;
     elseif X(1) <0 && Y(1) >=0
@@ -80,31 +88,37 @@ for i = 1:10
     else
         q = 4;
     end
-    X_0(i) = X(1);
-    Y_0(i) = Y(1);
+    
     X(1) = abs(X(1));
     Y(1) = abs(Y(1));
+    abs([X(1) Y(1)]) * 2^13;
     
-	element_angle = zeros(1,N);
+    element_angle = zeros(1,N);
     for j = 1:N
         if Y(j) >= 0
             u = -1;
         else
             u = 1;
         end
-        X(j+1) = X(j) - u/2^(j-1)* Y(j);
-        Y(j+1) = u/2^(j-1)*X(j) + Y(j);
-		
-		element_angle(j) = atan(2^(-(j-1)));
+        X_s = trun( Y(j) / (2^(j-1)), bit_xy);
+        Y_s = trun( X(j) / (2^(j-1)), bit_xy);
+        X(j+1) = X(j) - u*X_s;
+        Y(j+1) = u*Y_s + Y(j);
+
+        X(j+1) = trun( X(j+1), bit_xy);
+        Y(j+1) = trun( Y(j+1), bit_xy);
+
+        element_angle(j) = trun( atan(2^(-(j-1))), bit_t);
         theta(j+1) = theta(j) - u*element_angle(j);
+        theta(j+1) = trun( theta(j+1), bit_t);
     end
     
     if q == 1
         theta_N(i) = theta(N+1);
     elseif q == 2
-        theta_N(i) = pi - theta(N+1);
+        theta_N(i) = trun(pi, bit_t) - theta(N+1);
     elseif q == 3
-        theta_N(i) = theta(N+1) - pi;
+        theta_N(i) = theta(N+1) - trun(pi, bit_t);
     else
         theta_N(i) = -theta(N+1);
     end
@@ -151,7 +165,7 @@ for bit_xy = 10:19
                 X(j+1) = trun( X(j+1), bit_xy);
                 Y(j+1) = trun( Y(j+1), bit_xy);
 
-                element_angle(j) = atan(2^(-(j-1)));
+                element_angle(j) = trun( atan(2^(-(j-1))), bit_t);
                 theta(j+1) = theta(j) - u*element_angle(j);
                 theta(j+1) = trun( theta(j+1), bit_t);
             end
@@ -159,9 +173,9 @@ for bit_xy = 10:19
             if q == 1
                 theta_N(i) = theta(N+1);
             elseif q == 2
-                theta_N(i) = pi - theta(N+1);
+                theta_N(i) = trun(pi, bit_t) - theta(N+1);
             elseif q == 3
-                theta_N(i) = theta(N+1) - pi;
+                theta_N(i) = theta(N+1) - trun(pi, bit_t);
             else
                 theta_N(i) = -theta(N+1);
             end

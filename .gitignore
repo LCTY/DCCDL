@@ -61,6 +61,8 @@
 *.xrpt
 *.xst
 *.xwbt
+*/Verilog/SignalDb/*
+*/Verilog/netgen/*
 _1
 pn_info
 Lab_2/Matlab/test.m

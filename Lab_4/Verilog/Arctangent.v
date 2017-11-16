@@ -3,6 +3,14 @@ module Arctangent(
 	input signed [12-1:0] X, Y, 
 	output signed [17-1:0] Theta
 );
+	reg [2-1:0] count;
+	always @(posedge Clk or posedge Reset) begin
+		if (Reset)
+			count <= 2'd0;
+		else
+			count <= count + 1'b1;
+	end
+	wire clk = count[1];
 
 	reg signed [16-1:0] Theta_element [10:0];
 	initial begin
@@ -41,30 +49,6 @@ module Arctangent(
 		end
 	endgenerate
 	
-	Output_Unit Output_Unit(Clk, Reset, X[11], Y[11], Theta_out[10], Theta);
-	
-	/*
-	// Control
-	always @(posedge Clk or posedge Reset) begin
-		if (Reset)
-			Theta <= 17'd0;
-			
-		// First quadrant: theta
-		else if ((X[11] == 0) && (Y[11] == 0))
-			Theta <= Theta_out[10];
-			
-		// Second quadrant: pi - theta
-		else if ((X[11] == 1) && (Y[11] == 0))
-			Theta <= 17'sd51471 - Theta_out[10];
-		
-		// Third quadrant: theta - pi
-		else if ((X[11] == 1) && (Y[11] == 1))
-			Theta <= Theta_out[10] - 17'sd51471;
-		
-		// Fourth quadrant: -theta
-		else
-			Theta <= 17'sd0 - Theta_out[10];
-	end
-	*/
+	Output_Unit Output_Unit(clk, Reset, X[11], Y[11], Theta_out[10], Theta);
 
 endmodule

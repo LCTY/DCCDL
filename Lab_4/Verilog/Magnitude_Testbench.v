@@ -46,11 +46,10 @@ module Magnitude_Testbench;
 		Y_array[9] = -12'd255;
 	end
 	
-	always #20 Clk = ~Clk;
-	
-	reg rst;
+	reg clk, rst;
 	reg [4-1:0] count;
-	always @(posedge Clk or posedge rst) begin
+	always #50 clk = ~clk;
+	always @(posedge clk or posedge rst) begin
 		if (Reset) begin
 			count <= 0;
 			X <= 0;
@@ -64,12 +63,13 @@ module Magnitude_Testbench;
 		end
 	end
 
+	always #12.5 Clk = ~Clk; // 40MHz
 	initial begin
 		// Initialize Inputs
-		Clk = 1;
-		rst = 1;
-		Reset = 1;
-		#80; rst = 0;
+		Clk = 1; Reset = 1;
+		clk = 1; rst = 1;
+		
+		#100; rst = 0;
 		#6.5; Reset = 0;
 	end
       

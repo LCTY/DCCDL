@@ -1,0 +1,49 @@
+
+# PlanAhead Generated physical constraints 
+
+NET "Reset" LOC = L10;
+NET "Clk" LOC = AE15;
+
+# PlanAhead Generated physical constraints 
+
+NET "X[0]" LOC = K10;
+NET "X[1]" LOC = M3;
+NET "X[2]" LOC = M1;
+NET "X[3]" LOC = M8;
+NET "X[4]" LOC = M6;
+NET "X[5]" LOC = M10;
+NET "X[6]" LOC = M9;
+NET "X[7]" LOC = P3;
+NET "X[8]" LOC = P1;
+NET "X[9]" LOC = N6;
+NET "X[10]" LOC = P6;
+NET "X[11]" LOC = P10;
+NET "Y[0]" LOC = N9;
+NET "Y[1]" LOC = R2;
+NET "Y[2]" LOC = R1;
+NET "Y[3]" LOC = R7;
+NET "Y[4]" LOC = R6;
+NET "Y[5]" LOC = R9;
+NET "Y[6]" LOC = P8;
+NET "Y[7]" LOC = T3;
+NET "Y[8]" LOC = T1;
+NET "Y[9]" LOC = R8;
+NET "Y[10]" LOC = T8;
+NET "Y[11]" LOC = R10;
+NET "Theta[0]" LOC = G4;
+NET "Theta[1]" LOC = G3;
+NET "Theta[2]" LOC = J2;
+NET "Theta[3]" LOC = J1;
+NET "Theta[4]" LOC = K5;
+NET "Theta[5]" LOC = J5;
+NET "Theta[6]" LOC = L2;
+NET "Theta[7]" LOC = L1;
+NET "Theta[8]" LOC = L9;
+NET "Theta[9]" LOC = L8;
+NET "Theta[10]" LOC = N2;
+NET "Theta[11]" LOC = N1;
+NET "Theta[12]" LOC = N5;
+NET "Theta[13]" LOC = N4;
+NET "Theta[14]" LOC = N8;
+NET "Theta[15]" LOC = N7;
+NET "Theta[16]" LOC = R4;
