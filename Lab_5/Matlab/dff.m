@@ -6,8 +6,8 @@ classdef dff < handle
     
     methods
         function obj = dff( x )
-            obj.value = ones(1,x);
-            obj.Q = 1;
+            obj.value = zeros(1,x);
+            obj.Q = 0;
         end
         
         function update( obj, x )

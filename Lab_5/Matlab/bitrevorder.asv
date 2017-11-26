@@ -17,6 +17,6 @@ function y = bitrevorder( x )
     for i = 1:len
         y(i) = x(round(index(i)+1));
     end
-    fprintf('%d\n',flip(index));
+    disp(index
 end
 

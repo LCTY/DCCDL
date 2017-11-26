@@ -24,44 +24,32 @@ rom16 = trun( twiddle_factor(16), 11 );
 rom8 = trun( twiddle_factor(8), 11 );
 rom4 = trun( twiddle_factor(4), 11 );
 
-% rom_idx = ones(1,5); mode = zeros(1,5);
+buffer1 = dff(32);
+buffer2 = dff(32);
 
-% idx_2 = dff(1); mode_2 = dff(1);
-% idx_3 = dff(2); mode_3 = dff(2);
-% idx_4 = dff(3); mode_4 = dff(3);
-% mode_5 = dff(4);
-
-X = zeros(1,32);
+count = 30;
+select = 0;
 
 for time = 0:70 % time 0~62
     s1.low_in = x(time+1);
 	s1.rom = rom32(s1.idx);
-	% s1.mode = mode(1);
     s1.comb_update;
     
     s2.low_in = s1.dff_out;
 	s2.rom = rom16(s2.idx);
-	% s2.mode = mode_2.Q;
     s2.comb_update;
     
     s3.low_in = s2.dff_out;
 	s3.rom = rom8(s3.idx);
-	% s3.mode = mode_3.Q;
     s3.comb_update;
     
     s4.low_in = s3.dff_out;
 	s4.rom = rom4(s4.idx);
-	% s4.mode = mode_4.Q;
     s4.comb_update;
     
     s5.low_in = s4.dff_out;
 	s5.rom = 1;
-	% s5.mode = mode_5.Q;
     s5.comb_update;
-    
-    if (time >= 35) && (time <= 35+31)
-        X(time - 34) = (s5.mul_out);
-    end
 
 %     fprintf( '%d\t%d\n', s1.mode, s1.dff_mode );
 %     fprintf( '%d\t%d\t%d\n', s1.mode, real(s1.low_in)*2^11, imag(s1.low_in)*2^11 );
@@ -70,33 +58,30 @@ for time = 0:70 % time 0~62
 %     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s2.idx, s2.mode, real(s2.low_in)*2^11, imag(s2.low_in)*2^11, real(s2.dff_out)*2^11, imag(s2.dff_out)*2^11 );
 %     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s3.idx, s3.mode, real(s3.low_in)*2^11, imag(s3.low_in)*2^11, real(s3.dff_out)*2^11, imag(s3.dff_out)*2^11 );
 %     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s4.idx, s4.mode, real(s4.low_in)*2^11, imag(s4.low_in)*2^11, real(s4.dff_out)*2^11, imag(s4.dff_out)*2^11 );
-    fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', 1, s5.mode, real(s5.low_in)*2^11, imag(s5.low_in)*2^11, real(s5.dff_out)*2^11, imag(s5.dff_out)*2^11 );
+%     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', 1, s5.mode, real(s5.low_in)*2^11, imag(s5.low_in)*2^11, real(s5.dff_out)*2^11, imag(s5.dff_out)*2^11 );
+%     fprintf( '%d\t%d\t%d\t%d\t%d\n', time, count, select, real(s5.mul_out)*2^11, imag(s5.mul_out)*2^11 );
 %     fprintf( '%d\t%d\n', real(s5.mul_out)*2^11, imag(s5.mul_out)*2^11 );
+    
+    if select == 0
+        buffer1.update(s5.mul_out);
+    else
+        buffer2.update(s5.mul_out);
+    end
+    
+    count = count + 1;
+    if count > 32
+        count = 1;
+        select = abs(select-1);
+    end
     
     s1.seq_update;
     s2.seq_update;
     s3.seq_update;
     s4.seq_update;
     s5.seq_update;
-	
-% 	idx_2.update(rom_idx(2));
-% 	idx_3.update(rom_idx(3));
-% 	idx_4.update(rom_idx(4));
-% 	mode_2.update(mode(2));
-% 	mode_3.update(mode(3));
-% 	mode_4.update(mode(4));
-% 	mode_5.update(mode(5));
-	
-% 	for j = 1:5
-% 		rom_idx(j) = rom_idx(j) + 1;
-% 		if rom_idx(j) > 2^(5-j)
-% 			rom_idx(j) = 1;
-% 			mode(j) = abs(mode(j) - 1);
-% 		end
-% 	end
 end
 
-X = bitrevorder(X);
+X = bitrevorder(flip(buffer1.value));
 MAE = log2(mean(abs(X-Y)));
 
 %{
