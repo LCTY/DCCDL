@@ -63,6 +63,8 @@
 *.xwbt
 */Verilog/SignalDb/*
 */Verilog/netgen/*
+*/Verilog/Data/*
+*/Verilog/iseconfig/*
 _1
 pn_info
 Lab_2/Matlab/test.m
