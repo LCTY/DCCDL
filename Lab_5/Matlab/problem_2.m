@@ -33,7 +33,7 @@ select = 0;
 %% ¶}©l°õ¦æ
 % fprintf( 'time\tcount\tselect\tX_re\tX_im\t\n' );
 for time = 0:20
-    %% Combinational stage
+	%% Combinational stage
 	s1.low_in = x(time+1);
 	s1.rom = rom8(s1.idx);
 	s1.comb_update;
@@ -48,14 +48,14 @@ for time = 0:20
 	
 	fprintf( '%d\t%d\t%d\t%f\t%f\n', time, count, select, real(s3.mul_out), imag(s3.mul_out));
 	
-    % Buffer control
-    if select == 0
+	% Buffer control
+	if select == 0
 		buffer1.update(s3.mul_out);
 	else
 		buffer2.update(s3.mul_out);
-    end
+	end
 	
-    %% Sequential stage
+	%% Sequential stage
 	count = count + 1;
 	if count > 8
 		count = 1;

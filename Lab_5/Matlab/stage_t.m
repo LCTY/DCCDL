@@ -1,30 +1,30 @@
 classdef stage_t < handle
-    
-    properties
-        z
+	
+	properties
+		z
 		dff_out
-        up_in
-        low_in
-        up_out
-        low_out
-        mul_out
+		up_in
+		low_in
+		up_out
+		low_out
+		mul_out
 		idx
 		rom
-        mode
+		mode
 		multiplier
-    end
-    
-    methods
-        function obj = stage_t( N )
+	end
+	
+	methods
+		function obj = stage_t( N )
 			delay = -log2(N) + 4;
-		
-            obj.z			= zeros(1,N);
+			
+			obj.z			= zeros(1,N);
 			obj.dff_out		= 0;
-            obj.up_in		= 0;
-            obj.low_in		= 0;
-            obj.up_out		= 0;
-            obj.low_out		= 0;
-            obj.mul_out		= 0;
+			obj.up_in		= 0;
+			obj.low_in		= 0;
+			obj.up_out		= 0;
+			obj.low_out		= 0;
+			obj.mul_out		= 0;
 			if (mod(delay, N) ~= 0)
 				obj.idx		= N+1-mod(delay, N);
 			else
@@ -37,7 +37,7 @@ classdef stage_t < handle
 				obj.mode	= 0;
 			end
 			obj.multiplier	= 1;
-        end
+		end
 		
 		function comb_update( obj )
 			len = length(obj.z);
@@ -55,15 +55,15 @@ classdef stage_t < handle
 		
 		function seq_update( obj )
 			len = length(obj.z);
-						
-            if len > 1
-                for i = len:-1:2
-                    obj.z(i) = obj.z(i-1);
-                end
-                obj.z(1) = obj.up_out;
-            else
-                obj.z = obj.up_out;
-            end
+			
+			if len > 1
+				for i = len:-1:2
+					obj.z(i) = obj.z(i-1);
+				end
+				obj.z(1) = obj.up_out;
+			else
+				obj.z = obj.up_out;
+			end
 			
 			obj.idx = obj.idx + 1;
 			if obj.idx > len
@@ -73,7 +73,7 @@ classdef stage_t < handle
 			
 			obj.dff_out = obj.mul_out;
 		end
-    end
-    
+	end
+	
 end
 
