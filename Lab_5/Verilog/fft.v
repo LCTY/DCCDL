@@ -2,15 +2,15 @@ module fft(
 	input Clk, Reset, 
 	input signed [12-1:0] X_re, X_im, 
 	output signed [17-1:0] Y0_re, Y0_im, Y1_re, Y1_im, 
-	output signed [17-1:0] mul_re, mul_im, 
+	output signed [13-1:0] mul_re, mul_im, 
 	output mode1, mode2, mode3, mode4, mode5, 
 	output [5-1:0] counter, 
 	output select
 );
-	//assign mul_re = STAGE[1].scope1.mul_out_re;
-	//assign mul_im = STAGE[1].scope1.mul_out_im;
-	assign mul_re = STAGE[4].scope2.low_out_re;
-	assign mul_im = STAGE[4].scope2.low_out_im;
+	assign mul_re = STAGE[0].scope1.mul_out_re;
+	assign mul_im = STAGE[0].scope1.mul_out_im;
+	//assign mul_re = STAGE[4].scope2.low_out_re;
+	//assign mul_im = STAGE[4].scope2.low_out_im;
 	
 	wire [1:0] buff_wr;
 	reorder_ctrl C0(Clk, Reset, counter, select, buff_wr);
