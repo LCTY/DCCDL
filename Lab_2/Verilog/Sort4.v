@@ -16,4 +16,3 @@ module Sort4(
 	Comparator_C C0(layer_2[1], layer_2[2], DataOut_1, DataOut_2);
 	
 endmodule
-
