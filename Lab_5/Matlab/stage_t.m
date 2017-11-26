@@ -72,7 +72,6 @@ classdef stage_t < handle
 			end
 			
 			obj.dff_out = obj.mul_out;
-			
 		end
     end
     

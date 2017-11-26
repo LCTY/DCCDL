@@ -61,6 +61,7 @@
 *.xrpt
 *.xst
 *.xwbt
+*.asv
 */Verilog/SignalDb/*
 */Verilog/netgen/*
 */Verilog/Data/*

@@ -12,8 +12,10 @@ module fft(
 	assign mul_re = STAGE[4].scope2.low_out_re;
 	assign mul_im = STAGE[4].scope2.low_out_im;
 	
-	reorder_ctrl C0(Clk, Reset, counter, select);
+	wire [1:0] buff_wr;
+	reorder_ctrl C0(Clk, Reset, counter, select, buff_wr);
 	
+	/*
 	reg buff0_wr, buff1_wr;	
 	always @(*) begin
 		if (select == 1'b0) begin
@@ -25,13 +27,14 @@ module fft(
 			buff1_wr = 1'b1;
 		end
 	end
+	*/
 	reorder_buff#(17, 32) B0(
-		Clk, Reset, buff0_wr, 
+		Clk, Reset, buff_wr[0], 
 		STAGE[4].scope2.low_out_re, STAGE[4].scope2.low_out_im, 
 		Y0_re, Y0_im
 	);
 	reorder_buff#(17, 32) B1(
-		Clk, Reset, buff1_wr, 
+		Clk, Reset, buff_wr[1], 
 		STAGE[4].scope2.low_out_re, STAGE[4].scope2.low_out_im, 
 		Y1_re, Y1_im
 	);

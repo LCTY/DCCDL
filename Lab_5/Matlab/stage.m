@@ -2,29 +2,41 @@ classdef stage < handle
     
     properties
         z
+		dff_out
         up_in
         low_in
         up_out
         low_out
         mul_out
-        mode
-		rom
 		idx
+		rom
+        mode
 		multiplier
     end
     
     methods
-        function obj = stage( N )
+        function obj = stage( N, Total_stage )
+			delay = -log2(N) + (Total_stage-1);
+		
             obj.z			= zeros(1,N);
+			obj.dff_out		= 0;
             obj.up_in		= 0;
             obj.low_in		= 0;
             obj.up_out		= 0;
             obj.low_out		= 0;
             obj.mul_out		= 0;
-            obj.mode		= 0;
-			obj.rom			= twiddle_factor(N*2);
-			obj.idx			= 1;
-			obj.multiplier	= obj.rom(1);
+			if (mod(delay, N) ~= 0)
+				obj.idx		= N+1-mod(delay, N);
+			else
+				obj.idx		= 1;
+			end
+			obj.rom			= 1;
+			if (mod(delay, N*2) > 0) && (mod(delay, N*2) <= N)
+				obj.mode	= 1;
+			else
+				obj.mode	= 0;
+			end
+			obj.multiplier	= 1;
         end
 		
 		function comb_update( obj )
@@ -35,7 +47,7 @@ classdef stage < handle
 			
 			
 			if obj.mode == 0
-				obj.multiplier = obj.rom(obj.idx);
+				obj.multiplier = obj.rom;
 			else
 				obj.multiplier = 1;
 			end
@@ -60,6 +72,7 @@ classdef stage < handle
 				obj.mode = abs(obj.mode - 1);
 			end
 			
+			obj.dff_out = obj.mul_out;
 		end
     end
     

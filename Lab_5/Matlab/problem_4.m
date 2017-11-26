@@ -10,34 +10,56 @@ for i = 1:length(index)
 end
 
 x = ifft(Y);            % 將Y透過ifft轉為x0~x31
-x = [x zeros(1,32)];    % x31之後補0
+x = [x zeros(1,40)];    % x31之後補0
 
-s1 = stage(16);
-s2 = stage(8);
-s3 = stage(4);
-s4 = stage(2);
-s5 = stage(1);
+s1 = stage(16,5);
+s2 = stage(8,5);
+s3 = stage(4,5);
+s4 = stage(2,5);
+s5 = stage(1,5);
 
-X = zeros(1,32);
+rom32 = twiddle_factor(32);
+rom16 = twiddle_factor(16);
+rom8 = twiddle_factor(8);
+rom4 = twiddle_factor(4);
 
-for time = 0:62
+buffer1 = dff(32);
+buffer2 = dff(32);
+
+count = 30;
+select = 0;
+
+for time = 0:70 % time 0~62
     s1.low_in = x(time+1);
+	s1.rom = rom32(s1.idx);
     s1.comb_update;
     
-    s2.low_in = s1.mul_out;
+    s2.low_in = s1.dff_out;
+	s2.rom = rom16(s2.idx);
     s2.comb_update;
     
-    s3.low_in = s2.mul_out;
+    s3.low_in = s2.dff_out;
+	s3.rom = rom8(s3.idx);
     s3.comb_update;
     
-    s4.low_in = s3.mul_out;
+    s4.low_in = s3.dff_out;
+	s4.rom = rom4(s4.idx);
     s4.comb_update;
     
-    s5.low_in = s4.mul_out;
+    s5.low_in = s4.dff_out;
+	s5.rom = 1;
     s5.comb_update;
     
-    if time >= 31
-        X(time - 30) = (s5.mul_out);
+    if select == 0
+        buffer1.update(s5.mul_out);
+    else
+        buffer2.update(s5.mul_out);
+    end
+    
+    count = count + 1;
+    if count > 32
+        count = 1;
+        select = abs(select-1);
     end
     
     s1.seq_update;
@@ -47,5 +69,5 @@ for time = 0:62
     s5.seq_update;
 end
 
-X = bitrevorder(X);
+X = bitrevorder(flip(buffer1.value));
 MAE = log2(mean(abs(X-Y)));

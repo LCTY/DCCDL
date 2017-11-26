@@ -51,16 +51,18 @@ for time = 0:70 % time 0~62
 	s5.rom = 1;
     s5.comb_update;
 
-%     fprintf( '%d\t%d\n', s1.mode, s1.dff_mode );
-%     fprintf( '%d\t%d\t%d\n', s1.mode, real(s1.low_in)*2^11, imag(s1.low_in)*2^11 );
-%     fprintf( '%d\t%d\n', real(s1.low_out)*2^11, imag(s1.low_out)*2^11 );
-%     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s1.idx, s1.mode, real(s1.low_in)*2^11, imag(s1.low_in)*2^11, real(s1.dff_out)*2^11, imag(s1.dff_out)*2^11 );
-%     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s2.idx, s2.mode, real(s2.low_in)*2^11, imag(s2.low_in)*2^11, real(s2.dff_out)*2^11, imag(s2.dff_out)*2^11 );
-%     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s3.idx, s3.mode, real(s3.low_in)*2^11, imag(s3.low_in)*2^11, real(s3.dff_out)*2^11, imag(s3.dff_out)*2^11 );
-%     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s4.idx, s4.mode, real(s4.low_in)*2^11, imag(s4.low_in)*2^11, real(s4.dff_out)*2^11, imag(s4.dff_out)*2^11 );
-%     fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', 1, s5.mode, real(s5.low_in)*2^11, imag(s5.low_in)*2^11, real(s5.dff_out)*2^11, imag(s5.dff_out)*2^11 );
-%     fprintf( '%d\t%d\t%d\t%d\t%d\n', time, count, select, real(s5.mul_out)*2^11, imag(s5.mul_out)*2^11 );
-%     fprintf( '%d\t%d\n', real(s5.mul_out)*2^11, imag(s5.mul_out)*2^11 );
+	%{
+    fprintf( '%d\t%d\n', s1.mode, s1.dff_mode );
+    fprintf( '%d\t%d\t%d\n', s1.mode, real(s1.low_in)*2^11, imag(s1.low_in)*2^11 );
+    fprintf( '%d\t%d\n', real(s1.low_out)*2^11, imag(s1.low_out)*2^11 );
+    fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s1.idx, s1.mode, real(s1.low_in)*2^11, imag(s1.low_in)*2^11, real(s1.dff_out)*2^11, imag(s1.dff_out)*2^11 );
+    fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s2.idx, s2.mode, real(s2.low_in)*2^11, imag(s2.low_in)*2^11, real(s2.dff_out)*2^11, imag(s2.dff_out)*2^11 );
+    fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s3.idx, s3.mode, real(s3.low_in)*2^11, imag(s3.low_in)*2^11, real(s3.dff_out)*2^11, imag(s3.dff_out)*2^11 );
+    fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', s4.idx, s4.mode, real(s4.low_in)*2^11, imag(s4.low_in)*2^11, real(s4.dff_out)*2^11, imag(s4.dff_out)*2^11 );
+    fprintf( '%d\t%d\t%d\t%d\t%d\t%d\n', 1, s5.mode, real(s5.low_in)*2^11, imag(s5.low_in)*2^11, real(s5.dff_out)*2^11, imag(s5.dff_out)*2^11 );
+    fprintf( '%d\t%d\t%d\t%d\t%d\n', time, count, select, real(s5.mul_out)*2^11, imag(s5.mul_out)*2^11 );
+    fprintf( '%d\t%d\n', real(s5.mul_out)*2^11, imag(s5.mul_out)*2^11 );
+	%}
     
     if select == 0
         buffer1.update(s5.mul_out);
