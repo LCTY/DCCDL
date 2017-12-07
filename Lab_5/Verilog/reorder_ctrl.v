@@ -1,9 +1,9 @@
 module reorder_ctrl(
 	input Clk, Reset, 
-	output reg [5-1:0] counter, 
-	output reg select, 
 	output reg [1:0] buffer_write_enable
 );
+	reg [5-1:0] counter;
+	reg select;
 
 	always @(*) begin
 		if (select == 1'b0) begin

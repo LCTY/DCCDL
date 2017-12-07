@@ -1,6 +1,5 @@
 module stage #(parameter WIDTH = 13, N = 16, IDX = 0, MODE = 0)(
 	input Clk, Reset, 
-	output reg mode, 
 	input signed [WIDTH-2:0] Low_in_re, Low_in_im, 
 	output reg signed [WIDTH-1:0] Mul_out_re, Mul_out_im, 
 	input signed [13-1:0] Rom_re, Rom_im, 
@@ -24,16 +23,18 @@ module stage #(parameter WIDTH = 13, N = 16, IDX = 0, MODE = 0)(
 		end
 	end
 	
-	//reg mode;
+	reg mode;
 	
 	butterfly#(WIDTH) U0(up_in_re, up_in_im, {Low_in_re[WIDTH-2], Low_in_re}, {Low_in_im[WIDTH-2], Low_in_im}, mode, up_out_re, up_out_im, low_out_re, low_out_im);
 	cmul#(WIDTH) U1(low_out_re, low_out_im, multiplier_re, multiplier_im, mul_out_re, mul_out_im);
+	
+	assign mode_n = ~mode;
 	
 	always @(*) begin
 		up_in_re = z_re[N-1];
 		up_in_im = z_im[N-1];
 		
-		if (mode == 1'b0) begin
+		if (mode_n == 1'b1) begin
 			multiplier_re = Rom_re;
 			multiplier_im = Rom_im;
 		end

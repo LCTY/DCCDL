@@ -78,5 +78,40 @@ for time = 0:70 % time 0~62
 	s5.seq_update;
 end
 
+% stem(0:31, real(x(1:32)));
+% xlabel('n');
+% xlim([0 31]);
+% ylim([-1 1]);
+% title('x real-part');
+
+% stem(0:31, imag(x(1:32)));
+% xlabel('n');
+% xlim([0 31]);
+% ylim([-1 1]);
+% title('x imaginary-part');
+
 X = bitrevorder(flip(buffer1.value));
+
+% stem(0:31, real(X));
+% xlabel('n');
+% xlim([0 31]);
+% ylim([-1 1]);
+% title('X real-part');
+
+% stem(0:31, imag(X));
+% xlabel('n');
+% xlim([0 31]);
+% ylim([-1 1]);
+% title('X imaginary-part');
+
+% stem(0:31, real(X)-real(Y));
+% xlabel('n');
+% xlim([0 31]);
+% title('Real-part: Difference between X and Y (diff = X-Y)');
+
+% stem(0:31, imag(X)-imag(Y));
+% xlabel('n');
+% xlim([0 31]);
+% title('Imaginary-part: Difference between X and Y (diff = X-Y)');
+
 MAE = log2(mean(abs(X-Y)));

@@ -14,11 +14,20 @@ end
 % 將Y透過ifft轉為x0~x7
 x = ifft(Y);
 
-%{
-scatter(real(x), imag(x));
-set(gca,'XAxisLocation','origin');
-set(gca,'YAxisLocation','origin');
-scatter(real(Y), imag(Y));
-set(gca,'XAxisLocation','origin');
-set(gca,'YAxisLocation','origin');
-%}
+% stem(0:7, real(Y));
+% xlabel('n');
+% title('Y real-part');
+
+% stem(0:7, imag(Y));
+% xlabel('n');
+% title('Y imaginary-part');
+
+% stem(0:7, real(x));
+% xlabel('n');
+% ylim([-1 1]);
+% title('x real-part');
+
+% stem(0:7, imag(x));
+% xlabel('n');
+% ylim([-1 1]);
+% title('x imaginary-part');

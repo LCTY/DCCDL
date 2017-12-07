@@ -103,4 +103,8 @@ MAE = log2(mean(abs(X-Y)));
 % fprintf('%d\t%d\t%d\n',[0:1; real(s4.rom)*2^11; imag(s4.rom)*2^11]);
 % fprintf('ROM2 in decimal format\nIndex\tRe\tIm\n');
 % fprintf('%d\t%d\t%d\n',[0; real(s5.rom)*2^11; imag(s5.rom)*2^11]);
+
+% problem 8-3
+% MAE = log2(mean(abs(real(X)-real(Y))))
+% MAE = log2(mean(abs(imag(X)-imag(Y))))
 %}

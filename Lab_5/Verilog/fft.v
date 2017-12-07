@@ -1,44 +1,35 @@
 module fft(
 	input Clk, Reset, 
 	input signed [12-1:0] X_re, X_im, 
-	output signed [17-1:0] Y0_re, Y0_im, Y1_re, Y1_im, 
-	output signed [13-1:0] mul_re, mul_im, 
-	output mode1, mode2, mode3, mode4, mode5, 
-	output [5-1:0] counter, 
-	output select
-);
-	assign mul_re = STAGE[0].scope1.mul_out_re;
-	assign mul_im = STAGE[0].scope1.mul_out_im;
-	//assign mul_re = STAGE[4].scope2.low_out_re;
-	//assign mul_im = STAGE[4].scope2.low_out_im;
-	
+	output reg signed [17-1:0] Y_re, Y_im
+);	
+	// Bit-reversal module
+	wire signed [17-1:0] y0_re, y0_im, y1_re, y1_im;
 	wire [1:0] buff_wr;
-	reorder_ctrl C0(Clk, Reset, counter, select, buff_wr);
-	
-	/*
-	reg buff0_wr, buff1_wr;	
-	always @(*) begin
-		if (select == 1'b0) begin
-			buff0_wr = 1'b1;
-			buff1_wr = 1'b0;
-		end
-		else begin
-			buff0_wr = 1'b0;
-			buff1_wr = 1'b1;
-		end
-	end
-	*/
+	reorder_ctrl C0(Clk, Reset, buff_wr);
 	reorder_buff#(17, 32) B0(
 		Clk, Reset, buff_wr[0], 
 		STAGE[4].scope2.low_out_re, STAGE[4].scope2.low_out_im, 
-		Y0_re, Y0_im
+		y0_re, y0_im
 	);
 	reorder_buff#(17, 32) B1(
 		Clk, Reset, buff_wr[1], 
 		STAGE[4].scope2.low_out_re, STAGE[4].scope2.low_out_im, 
-		Y1_re, Y1_im
+		y1_re, y1_im
 	);
 	
+	always @(*) begin
+		if (buff_wr[0] == 1'b0) begin
+			Y_re = y0_re;
+			Y_im = y0_im;
+		end
+		else begin
+			Y_re = y1_re;
+			Y_im = y1_im;
+		end
+	end
+	
+	// Stage 1~5
 	genvar i;
 	generate
 		for (i=0; i<5; i=i+1) begin : STAGE
@@ -55,7 +46,7 @@ module fft(
 			// Stage 1
 			if (i == 0) begin
 				stage#(13+i, 2**(4-i), 0, 0) s0(
-					Clk, Reset, mode1, 
+					Clk, Reset,  
 					X_re, X_im, 
 					STAGE[i].scope1.mul_out_re, STAGE[i].scope1.mul_out_im, 
 					STAGE[i].scope1.rom_re, STAGE[i].scope1.rom_im, 
@@ -70,7 +61,7 @@ module fft(
 				
 				if (i == 1)
 					stage#(13+i, 2**(4-i), 7, 1) s0(
-						Clk, Reset, mode2, 
+						Clk, Reset,  
 						low_in_re, low_in_im, 
 						STAGE[i].scope1.mul_out_re, STAGE[i].scope1.mul_out_im, 
 						STAGE[i].scope1.rom_re, STAGE[i].scope1.rom_im, 
@@ -78,7 +69,7 @@ module fft(
 					);
 				else if (i == 2)
 					stage#(13+i, 2**(4-i), 2, 1) s0(
-						Clk, Reset, mode3, 
+						Clk, Reset,  
 						low_in_re, low_in_im, 
 						STAGE[i].scope1.mul_out_re, STAGE[i].scope1.mul_out_im, 
 						STAGE[i].scope1.rom_re, STAGE[i].scope1.rom_im, 
@@ -86,7 +77,7 @@ module fft(
 					);
 				else
 					stage#(13+i, 2**(4-i), 1, 0) s0(
-						Clk, Reset, mode4, 
+						Clk, Reset,  
 						low_in_re, low_in_im, 
 						STAGE[i].scope1.mul_out_re, STAGE[i].scope1.mul_out_im, 
 						STAGE[i].scope1.rom_re, STAGE[i].scope1.rom_im, 
@@ -100,7 +91,7 @@ module fft(
 				assign low_in_im = STAGE[i-1].scope1.mul_out_im;
 				
 				stage_final#(13+i, 0) s1(
-					Clk, Reset, mode5, 
+					Clk, Reset,  
 					low_in_re, low_in_im, 
 					STAGE[i].scope2.low_out_re, STAGE[i].scope2.low_out_im
 				);
